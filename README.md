@@ -59,6 +59,10 @@ Use the `data-features` attribute on a DOM element to bind the function to that 
 ```
 <div class="my-feature" data-features="testFeature"></div>
 ```
+Also, you can assign as many features to a single DOM element as you would like.
+```
+<div class="my-feature" data-features="testFeature testFeatureTwo"></div>
+```
 ###Additional Features
 Aside from passing the jQuery root element of the feature to the init function,
 Harness also binds a `$` function to the object, as well as, the `$el` variable.
