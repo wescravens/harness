@@ -70,7 +70,7 @@ These are accessible in the init function or any other publicly accessible funct
 The `$` function is local to the object (accessible via `this.$`).  It does not interfere with the global `$` used by jQuery or any other library.
 
 Calling `this.$('.my-selector')` would traverse all of the root's child elements for an element with the `my-selector` class and return the jQuery object.
-This essentially just returns `$(<root element>).find(<parameter>);`
+This essentially just returns `$(<root>).find(<parameter>);`
 
 `this.$el` will return the jQuery representation of the root element.
 
