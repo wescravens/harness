@@ -10,7 +10,12 @@ Harness.testFeatureOne = (function(feat) {
 
 Harness.testFeatureTwo = (function(feat) {
 
+	feat.doStuff = function() {
+		console.log('this stuff', this);
+	};
+
 	feat.init = function($el) {
+		this.doStuff();
 		this.$('ul').append('<li>testFeatureTwo\'s root element class is ' + $el.attr('class') + '</li>');
 	};
 
@@ -18,15 +23,18 @@ Harness.testFeatureTwo = (function(feat) {
 
 }(Harness.testFeatureTwo || {}));
 
-Harness.testFeatureThree = (function(feat) {
+Harness.testFeatureThree = {
 
-	feat.init = function($el) {
+	doStuff: function() {
+		console.log('this', this);
+	},
+
+	init: function($el) {
+		this.doStuff();
 		this.$el.append('<li>testFeatureThree\'s root element class is ' + $el.attr('class') + '</li>');
-	};
+	}
 
-	return feat;
-
-}(Harness.testFeatureThree || {}));
+};
 
 $(document).ready(function() {
 	window.App = {};
