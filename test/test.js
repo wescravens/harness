@@ -21,7 +21,6 @@ Harness.testFeatureTwo = (function(feat) {
 Harness.testFeatureThree = (function(feat) {
 
 	feat.init = function($el) {
-		console.log('3 init');
 		this.$el.append('<li>testFeatureThree\'s root element class is ' + $el.attr('class') + '</li>');
 	};
 
