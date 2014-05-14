@@ -1,0 +1,12 @@
+{
+  "name": "Harness",
+  "version": "0.0.1",
+  "description": "A simple way to initialize and bind logic to DOM elements",
+  "devDependencies": {
+    "grunt-open": "~0.2.2",
+    "load-grunt-tasks": "~0.2.1",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-express": "~1.2.1"
+  }
+}
