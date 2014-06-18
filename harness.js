@@ -6,49 +6,65 @@
 //     For more details and documentation:
 //     https://github.com/wescravens/harness
 
-(function(root, build) {
+(function(root, factory) {
 
-	root.Harness = build(root, {}, (root.jQuery || root.$));
+	// AMD support
+	if ( typeof define === 'function' && define.amd ) {
+		define(['underscore', 'jquery', 'exports'], function(_, $, exports) {
+			return factory(root, exports, _, $);
+		})
+	} 
+	// expose global
+	else {
+		root.Harness = factory(root, {}, root._, (root.jQuery || root.$));
+	}
 
-}(this, function(root, Harness, $) {
+}(this, function(root, Harness, _, $) {
 
-	// Create $ under Harness namespace
+	// Reference $ under Harness namespace
 	Harness.$ = $;
 
-	var setupFeature = function(func, elem) {
-		var fn = Harness[func];
-		if ( fn && typeof fn.init === 'function' ) {
-			// set the feature's $ variable to traverse from the root element of the feature
-			// it will be accessible via this.$ and does not interfere with global $
-			fn.$ = function(el) {
-				return Harness.$(elem).find(el);
-			};
+	/**
+	 * Function to inject default properties
+	 * @private
+	 * @param  {String} func The function name to be initialized
+	 * @param  {Object} elem The root DOM node of the feature
+	 * @return {Object} The feature object to be initialized
+	 */
+	function setupFeature(func, elem) {
+		var fn = this[func];
+		
+		// set the feature's $ variable to traverse from the root element of the feature
+		// it will be accessible via this.$ and does not interfere with global $
+		fn.$ = function(el) {
+			return Harness.$(elem).find(el);
+		};
 
-			// cache the root element as this.$el
-			fn.$el = Harness.$(elem);
-		}
+		// cache the root element as this.$el
+		fn.$el = Harness.$(elem);
 		return fn;
-	};
+	}
 
-	var init = Harness.init = function() {
+	Harness.init = function() {
 		// cache the features
-		var features = Harness.$('[data-features]');
+		var $featureElements = Harness.$('[data-features]'),
+			_this = this;
 
-		// if no features exist, break the operation
-		if ( !features.length ) { return false; }
+		// if no features exist, no need to move on
+		if ( !$featureElements.length ) { return false; }
 
-		// loop through the features and call its init function if it exists
-		features.each(function() {
-			var func = Harness.$(this).data('features');
-			// if the data-features string contains multiple features, init each of them
-			var _this = this,
-			tmp = func.split(/\s*[\s,]\s*/);
-
-			tmp.forEach(function(fn){
-				// call the setup function that adds utility functions and
-				// init the function passing in the jQuery root element
-				setupFeature(fn, _this).init($(_this));
+		// Create an array of objects storing the function name and root DOM node of the feature (_.map)
+		// Remove the array nesting created by splitting the data-features string (_.flatten)
+		// Loop through the array, setup, and initialize the features (_.each)
+		_.each(_.flatten(_.map($featureElements, function(element) {
+			var funcArray = $(element).data('features').split(/\s*[\s,]\s*/);
+			return _.map(funcArray, function(func) {
+				return { func: func, element: element };
 			});
+		})), function(feature) {
+			if ( _this[feature.func] && typeof _this[feature.func].init === 'function' ) {
+				_.bind(setupFeature, _this)(feature.func, feature.element).init($(feature.element));
+			}
 		});
 	};
 
