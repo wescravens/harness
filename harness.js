@@ -12,7 +12,7 @@
 	if ( typeof define === 'function' && define.amd ) {
 		define(['underscore', 'jquery', 'exports'], function(_, $, exports) {
 			return factory(root, exports, _, $);
-		})
+		});
 	} 
 	// expose global
 	else {
