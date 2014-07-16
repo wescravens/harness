@@ -13,21 +13,30 @@ App.features.testFeatureOne = (function(feat) {
 
 	setEls = function() {
 		el.test = $el.find('p');
-	},
+	};
 
-	events = function() {
-		$el.off('click').on('click', function() {
-			console.log('$el', $el);
-			console.log('p', el.test);
-		});
+	feat.events = {
+		'click button': 'clickHandler'
+	};
+
+	feat.clickHandler = function() {
+		console.log('feat', feat);
+		var rootElClone = feat.offline();
+
+
+		console.log('click');
+
+		rootElClone.css({ 'background': 'red' });
+
+		this.$el.css({ 'background': 'blue' });
+
+		rootElClone.online();
 	};
 
 	feat.init = function(root) {
-		console.log('root', root);
 		$el = root;
 		$el.find('ul').append('<li>testFeatureOne\'s root element class is ' + $el.attr('class') + '</li>');
 		setEls();
-		events();
 	};
 
 	return feat;
@@ -37,7 +46,7 @@ App.features.testFeatureOne = (function(feat) {
 App.features.testFeatureTwo = (function(feat) {
 
 	feat.doStuff = function() {
-		console.log('this stuff', this);
+		// here is where I would put stuff to do... if I had something
 	};
 
 	feat.init = function($el) {
@@ -52,7 +61,7 @@ App.features.testFeatureTwo = (function(feat) {
 App.features.testFeatureThree = {
 
 	doStuff: function() {
-		console.log('this', this);
+
 	},
 
 	init: function($el) {
