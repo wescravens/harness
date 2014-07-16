@@ -89,6 +89,7 @@
 
 				$clone.online = function() {
 					_this.$el.replaceWith($clone);
+					_this.$el = $clone;
 				};
 
 				return $clone;
