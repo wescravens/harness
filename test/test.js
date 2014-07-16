@@ -26,13 +26,11 @@ App.features.testFeatureOne = (function(feat) {
 
 		console.log('click');
 
-		rootElClone.css({ 'background': 'red' });
+		rootElClone.css({ 'background': 'red' }); // root el is still unchanged here
 
-		this.$el.css({ 'background': 'blue' }); // demonstration how this won't 
+		this.$el.css({ 'background': 'blue' }); // root el is blue
 
-		rootElClone.online();
-
-		this.$el.css({ 'background': 'blue' });
+		rootElClone.online(); // root el is red
 	};
 
 	feat.init = function(root) {
